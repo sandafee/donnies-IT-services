@@ -1,0 +1,17 @@
+{
+  "name": "donnes-it-services-backend",
+  "version": "1.0.0",
+  "description": "Backend service for DONNES I.T SERVICES E-Commerce",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

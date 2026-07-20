@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DONNES I.T SERVICES Admin Dashboard - Manage orders, track inventory, and view real-time sales trends.">
+  <title>DONNES I.T SERVICES | Admin Operations</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- ChartJS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sidebar Admin Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 14px;">
+      <img src="/logo.png" alt="DONNES I.T SERVICES" style="max-width: 100%; max-height: 48px; border-radius: var(--radius-xs); object-fit: contain; filter: invert(1) hue-rotate(180deg) brightness(1.3) saturate(1.2); mix-blend-mode: screen;">
+      <span class="logo-text" style="font-size: 1.05rem; text-align: center; margin-top: 4px;">DONNES <span class="logo-accent">Admin</span></span>
+    </div>
+    
+    <nav class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <a href="#dashboard" class="menu-item active" id="menu-dash-btn">
+        <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+      </a>
+      <div class="sidebar-section-label">Catalog</div>
+      <a href="#inventory" class="menu-item" id="menu-inv-btn">
+        <i class="fa-solid fa-boxes-stacked"></i> <span>Inventory</span>
+      </a>
+      <a href="#add-product" class="menu-item" id="menu-add-prod-btn">
+        <i class="fa-solid fa-square-plus"></i> <span>Add Product</span>
+      </a>
+      <a href="#categories" class="menu-item" id="menu-cats-btn">
+        <i class="fa-solid fa-tags"></i> <span>Categories</span>
+      </a>
+      <div class="sidebar-section-label">Commerce</div>
+      <a href="#orders" class="menu-item" id="menu-orders-btn">
+        <i class="fa-solid fa-receipt"></i> <span>Orders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="http://localhost:3000" target="_blank" class="store-link-btn">
+        <i class="fa-solid fa-store"></i> <span>Visit Storefront</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Top Header -->
+    <header class="admin-header">
+      <div class="header-title">
+        <h1 id="page-title">Dashboard Overview</h1>
+        <p>Real-time analytics and management dashboard</p>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+        <div class="admin-profile">
+          <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
+          <span>Operations Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Sections -->
+
+    <!-- SECTION 1: DASHBOARD OVERVIEW -->
+    <section id="section-dashboard" class="admin-section">
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card glass">
+          <div class="stat-icon sales"><i class="fa-solid fa-sack-dollar"></i></div>
+          <div class="stat-info">
+            <span>Total Sales</span>
+            <h2 id="stat-sales">KES 0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card glass">
+          <div class="stat-icon orders"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <div class="stat-info">
+            <span>Orders Placed</span>
+            <h2 id="stat-orders">0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card glass">
+          <div class="stat-icon stock-out"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="stat-info">
+            <span>Out of Stock</span>
+            <h2 id="stat-out-of-stock" class="danger-text">0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card glass">
+          <div class="stat-icon stock-low"><i class="fa-solid fa-cubes"></i></div>
+          <div class="stat-info">
+            <span>Low Stock Alert</span>
+            <h2 id="stat-low-stock" class="warning-text">0</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts & Sales Trend Card -->
+      <div class="chart-card glass">
+        <div class="chart-card-header">
+          <h3><i class="fa-solid fa-chart-area"></i> Revenue Trends (Last 7 Active Days)</h3>
+          <div class="chart-legend">
+            <div class="chart-legend-dot"></div>
+            Sales Revenue (KES)
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="salesTrendChart"></canvas>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INVENTORY MANAGEMENT -->
+    <section id="section-inventory" class="admin-section hidden">
+      <div class="section-actions">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="inventory-search" placeholder="Search inventory by name, spec...">
+        </div>
+        <button id="add-product-btn" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Tech Listing</button>
+      </div>
+
+      <!-- Inventory Table -->
+      <div class="table-container glass">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-table-body">
+            <!-- Dynamic products populate here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 3: ORDERS LIST -->
+    <section id="section-orders" class="admin-section hidden">
+      <div class="section-actions">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="orders-search" placeholder="Search orders by customer, tracking ID...">
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="table-container glass">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer details</th>
+              <th>Items Bought</th>
+              <th>Coupon Used</th>
+              <th>Total Paid</th>
+              <th>Placed Date</th>
+              <th>Order Status</th>
+            </tr>
+          </thead>
+          <tbody id="orders-table-body">
+            <!-- Dynamic orders populate here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CATEGORY MANAGEMENT -->
+    <section id="section-categories" class="admin-section hidden">
+      <div class="card glass" style="max-width: 600px; padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--card-border); background: var(--bg-card);">
+        <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-plus"></i> Add New Category</h3>
+        <form id="category-form" style="display: flex; gap: 12px; margin-bottom: 32px;">
+          <input type="text" id="new-cat-name" required placeholder="e.g. Smart Watch" style="flex: 1; padding: 10px 14px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius-sm); color: var(--text); outline: none;">
+          <button type="submit" class="btn btn-primary">Add Category</button>
+        </form>
+
+        <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-tags"></i> Existing Categories</h3>
+        <div class="table-container glass">
+          <table style="width: 100%;">
+            <thead>
+              <tr>
+                <th style="padding: 12px;">ID</th>
+                <th style="padding: 12px;">Category Name</th>
+                <th style="padding: 12px; text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-table-body">
+              <!-- Dynamically populated from API -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Product Modal (Create & Edit) -->
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Tech Listing</h3>
+        <button class="modal-close-btn" id="close-product-modal">&times;</button>
+      </div>
+      
+      <form id="product-form" class="checkout-form">
+        <input type="hidden" id="edit-product-id">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="prod-name">Product Name</label>
+            <input type="text" id="prod-name" required placeholder="e.g. MacBook Pro M3">
+          </div>
+          
+          <div class="form-group">
+            <label for="prod-category">Category</label>
+            <select id="prod-category" required>
+              <!-- Dynamically loaded from categories API -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="prod-price">Price (KES)</label>
+            <input type="number" id="prod-price" required min="1" placeholder="e.g. 250000">
+          </div>
+
+          <div class="form-group">
+            <label for="prod-stock">Initial Stock</label>
+            <input type="number" id="prod-stock" required min="0" placeholder="e.g. 10">
+          </div>
+
+          <div class="form-group">
+            <label for="prod-phone">Order Hotline Phone Number</label>
+            <input type="text" id="prod-phone" placeholder="e.g. +254 712 345678" value="+254 712 345678">
+          </div>
+
+          <div class="form-group full-span">
+            <label>Product Image</label>
+            <!-- Image Preview Box -->
+            <div id="img-preview-container" style="width: 100%; height: 160px; border: 2px dashed var(--input-border); border-radius: var(--radius-md); background: var(--input-bg); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative; transition: var(--transition, 0.2s);">
+              <img id="prod-img-preview" src="" alt="Preview" style="max-width: 100%; max-height: 100%; object-fit: contain; display: none; border-radius: var(--radius-sm);">
+              <div id="img-preview-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.85rem;">
+                <i class="fa-solid fa-image" style="font-size: 2rem; color: var(--text-muted);"></i>
+                <span>Image preview will appear here</span>
+              </div>
+            </div>
+            <!-- Upload File Input -->
+            <label for="prod-image-file" id="upload-dropzone" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--primary-muted, rgba(99,153,255,0.07)); border: 1px dashed rgba(99,153,255,0.4); border-radius: var(--radius-sm); color: var(--sapphire); font-size: 0.85rem; cursor: pointer; transition: var(--transition, 0.2s);">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span id="upload-dropzone-label">Click or drag to upload image file (Max 10MB)</span>
+            </label>
+            <input type="file" id="prod-image-file" accept="image/*" style="display: none;">
+          </div>
+
+          <div class="form-group">
+            <label for="prod-image">Image URL or Filename</label>
+            <input type="text" id="prod-image" required placeholder="e.g. /images/cctv.png or https://example.com/item.jpg">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Auto-filled on upload, or enter path/URL manually.</div>
+          </div>
+
+          <div class="form-group full-span">
+            <label for="prod-desc">Description & Specifications</label>
+            <textarea id="prod-desc" required rows="4" placeholder="Enter hardware features, memory specifications..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" id="product-submit-btn" class="btn btn-primary w-full">Save Product</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin logic -->
+  <script src="app.js"></script>
+</body>
+</html>

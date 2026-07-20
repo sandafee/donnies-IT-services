@@ -1,0 +1,38 @@
+services:
+  backend:
+    build: ./backend
+    container_name: donnes-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - donnes_data:/data
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: donnes-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    depends_on:
+      - backend
+    restart: always
+
+  admin:
+    build: ./admin
+    container_name: donnes-admin
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  donnes_data:
+    driver: local

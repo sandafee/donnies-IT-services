@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DONNES I.T SERVICES - Discover premium laptops and smartphones with dynamic order tracking and premium glassmorphic UI.">
+  <title>DONNES I.T SERVICES | Premium E-Commerce</title>
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">
+        <img src="/logo.png" alt="DONNES I.T SERVICES" class="logo-img">
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search laptops, phones, specs...">
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="nav-links">
+        <a href="#shop" class="nav-link active" id="nav-shop-btn"><i class="fa-solid fa-bag-shopping"></i> Shop</a>
+        
+        <!-- Header Categories Dropdown -->
+        <div class="nav-dropdown" style="position: relative;">
+          <a href="#" class="nav-link" id="nav-cats-trigger" style="display: flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-tags"></i> Categories <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-top: 1px;"></i>
+          </a>
+          <div id="nav-categories-menu" class="dropdown-menu glass hidden" style="position: absolute; top: 100%; left: 0; min-width: 180px; z-index: 1000; margin-top: 8px; padding: 6px; border-radius: var(--radius-md); background: var(--bg-secondary); border: 1px solid var(--card-border); max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;">
+            <!-- Dynamic list populated from API -->
+          </div>
+        </div>
+
+        <a href="#tracker" class="nav-link" id="nav-track-btn"><i class="fa-solid fa-truck-ramp-box"></i> Track Order</a>
+      </nav>
+
+      <!-- Right Actions -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+
+        <!-- Cart Trigger -->
+        <button id="cart-trigger" class="cart-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+          Cart
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <!-- Glowing orbs -->
+    <div class="hero-glow-orb"></div>
+    <div class="hero-glow-orb"></div>
+    <!-- Product images floating backdrop — populated via JS -->
+    <div class="hero-floating-images" id="hero-floating-images"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="tagline"><i class="fa-solid fa-sparkles"></i> Demure & Sleek E-Commerce</div>
+      <h1>Premium Laptops & Phones</h1>
+      <p>Discover high-performance hardware, seeded with gorgeous visuals. Track orders in real-time with our interactive status pipeline.</p>
+      <div class="hero-buttons">
+        <a href="#shop" class="btn btn-primary">Browse Catalog</a>
+        <a href="#tracker" class="btn btn-secondary">Track Order</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Store Section -->
+  <main class="store-container" id="shop">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+      <div class="sidebar-header">
+        <h3><i class="fa-solid fa-sliders"></i> Filters</h3>
+        <button id="clear-filters-btn" class="clear-btn">Clear All</button>
+      </div>
+
+      <!-- Categories -->
+      <div class="filter-group">
+        <h4>Category</h4>
+        <div class="category-options" style="position: relative;">
+          <button id="category-dropdown-btn" class="cat-pill active" style="display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 10px 16px; cursor: pointer;">
+            <span id="active-category-label">All Categories</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 8px;"></i>
+          </button>
+          <div id="category-dropdown-menu" class="dropdown-menu glass hidden" style="position: absolute; top: 100%; left: 0; right: 0; z-index: 100; margin-top: 6px; padding: 6px; border-radius: var(--radius-md); background: var(--bg-secondary); border: 1px solid var(--card-border); max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;">
+            <!-- Dynamic list loaded from API -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Range -->
+      <div class="filter-group">
+        <h4>Max Price (KES)</h4>
+        <div class="price-slider-container">
+          <input type="range" id="price-range" min="10000" max="500000" step="10000" value="500000">
+          <div class="price-labels">
+            <span>10K</span>
+            <span id="price-limit-display">500K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Banner -->
+      <div class="promo-box">
+        <div class="promo-icon"><i class="fa-solid fa-percent"></i></div>
+        <div>
+          <h5>Promo Active</h5>
+          <p>Use coupon <strong>DONNES10</strong> at checkout for 10% off any order!</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product Grid Area -->
+    <section class="products-grid-section">
+      <div class="grid-header">
+        <span class="results-count" id="results-count">Showing 0 products</span>
+        <div class="sorting-selector">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="default">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div id="products-loader" class="loader-container">
+        <div class="spinner"></div>
+        <p>Fetching DONNES I.T SERVICES catalog...</p>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid"></div>
+    </section>
+  </main>
+
+  <!-- Interactive Order Tracker -->
+  <section class="tracker-section hidden" id="tracker-section">
+    <div class="tracker-card">
+      <h2><i class="fa-solid fa-truck-fast"></i> Order Tracking Pipeline</h2>
+      <p>Enter your unique order number to check current dispatch and delivery status.</p>
+
+      <div class="tracker-input-box">
+        <input type="number" id="tracking-id-input" placeholder="e.g. 1" min="1">
+        <button id="track-submit-btn" class="btn btn-primary">Track Order</button>
+      </div>
+
+      <div id="tracker-result" class="tracker-result-container hidden">
+        <div class="tracker-summary">
+          <div>
+            <h4>Order ID: #<span id="track-order-id"></span></h4>
+            <p>Customer: <strong id="track-cust-name"></strong></p>
+          </div>
+          <div class="track-total">
+            <span>Total Amount Paid</span>
+            <h3 id="track-order-total">KES 0</h3>
+          </div>
+        </div>
+
+        <!-- Pipeline Bar -->
+        <div class="pipeline-container">
+          <div class="pipeline-progress" id="pipeline-progress-bar"></div>
+          
+          <div class="pipeline-step" id="step-pending">
+            <div class="step-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="step-label">Pending</div>
+          </div>
+          <div class="pipeline-step" id="step-processing">
+            <div class="step-icon"><i class="fa-solid fa-gears"></i></div>
+            <div class="step-label">Processing</div>
+          </div>
+          <div class="pipeline-step" id="step-shipped">
+            <div class="step-icon"><i class="fa-solid fa-truck"></i></div>
+            <div class="step-label">Shipped</div>
+          </div>
+          <div class="pipeline-step" id="step-delivered">
+            <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="step-label">Delivered</div>
+          </div>
+        </div>
+
+        <div class="tracker-items-list" id="track-items-list">
+          <!-- Items will populate dynamically -->
+        </div>
+      </div>
+      
+      <div id="tracker-error" class="tracker-error hidden">
+        <i class="fa-solid fa-triangle-exclamation"></i> Order not found. Please verify the ID.
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Slide Drawer -->
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-header">
+        <h3><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h3>
+        <button id="close-cart-btn" class="close-btn">&times;</button>
+      </div>
+
+      <!-- Empty Cart View -->
+      <div id="cart-empty" class="cart-empty-state">
+        <div class="empty-icon"><i class="fa-solid fa-basket-shopping"></i></div>
+        <p>Your cart is empty.</p>
+        <button class="btn btn-primary" id="start-shopping-btn">Start Shopping</button>
+      </div>
+
+      <!-- Items List -->
+      <div id="cart-items-container" class="cart-items-list"></div>
+
+      <!-- Cart Footer -->
+      <div id="cart-footer" class="cart-footer hidden">
+        <!-- Coupon input -->
+        <div class="coupon-box">
+          <input type="text" id="coupon-input" placeholder="Promo code (e.g. DONNES10)">
+          <button id="apply-coupon-btn" class="btn btn-secondary">Apply</button>
+        </div>
+        <div id="coupon-message" class="coupon-msg"></div>
+
+        <div class="price-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal">KES 0</span>
+          </div>
+          <div class="summary-row discount-row hidden" id="discount-row">
+            <span>Discount (10%):</span>
+            <span id="cart-discount">-KES 0</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total:</span>
+            <span id="cart-total">KES 0</span>
+          </div>
+        </div>
+
+        <button id="checkout-trigger-btn" class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Dialog Modal -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-lock"></i> Secure Checkout</h3>
+        <button class="modal-close-btn" id="close-checkout-modal">&times;</button>
+      </div>
+      <form id="checkout-form" class="checkout-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cust-name">Full Name</label>
+            <input type="text" id="cust-name" required placeholder="e.g. Jane Doe">
+          </div>
+          <div class="form-group">
+            <label for="cust-email">Email Address</label>
+            <input type="email" id="cust-email" required placeholder="jane@example.com">
+          </div>
+          <div class="form-group">
+            <label for="cust-phone">Phone Number</label>
+            <input type="tel" id="cust-phone" required placeholder="e.g. +254 700 000 000">
+          </div>
+          <div class="form-group">
+            <label for="cust-address">Delivery Address (Nairobi, Kenya)</label>
+            <input type="text" id="cust-address" required placeholder="e.g. Westlands, Nairobi">
+          </div>
+        </div>
+        
+        <div class="checkout-summary-box">
+          <h4>Order Summary</h4>
+          <div class="summary-row">
+            <span>Payable Amount:</span>
+            <strong id="checkout-payable-display">KES 0</strong>
+          </div>
+        </div>
+
+        <button type="submit" id="checkout-submit-btn" class="btn btn-primary w-full">Place Order (Cash on Delivery)</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Success Modal -->
+  <div id="success-modal" class="modal">
+    <div class="modal-content success-card">
+      <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you for shopping at DONNES I.T SERVICES. Your order details are registered.</p>
+      
+      <div class="tracking-code-showcase">
+        <span>Save your Tracking ID:</span>
+        <h1 id="success-tracking-id">--</h1>
+        <button id="copy-track-id-btn" class="copy-btn"><i class="fa-solid fa-copy"></i> Copy ID</button>
+      </div>
+
+      <p class="tracker-hint">You can use this ID on the "Track Order" page to monitor delivery progress.</p>
+      <button class="btn btn-primary" id="close-success-btn">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal (incl. Reviews & Leave Review feature) -->
+  <div id="detail-modal" class="modal">
+    <div class="modal-content detail-modal-content">
+      <button class="modal-close-btn" id="close-detail-modal">&times;</button>
+      
+      <div class="detail-grid">
+        <div class="detail-image-box">
+          <img id="detail-product-img" src="" alt="Product Image">
+        </div>
+        <div class="detail-info-box">
+          <span class="detail-category" id="detail-product-category">Laptops</span>
+          <h2 id="detail-product-name">Product Name</h2>
+          <div class="detail-rating">
+            <div class="stars" id="detail-rating-stars"></div>
+            <span id="detail-rating-avg">0.0 (0 reviews)</span>
+          </div>
+          <h3 class="detail-price" id="detail-product-price">KES 0</h3>
+          
+          <div class="stock-badge" id="detail-stock-badge">In Stock</div>
+          
+          <p class="detail-description" id="detail-product-desc">Product description goes here.</p>
+
+          <!-- Contact Phone Number to Order -->
+          <div style="margin: 18px 0; padding: 12px; background: rgba(99, 153, 255, 0.08); border: 1px dashed rgba(99, 153, 255, 0.25); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-phone-volume" style="color: var(--sapphire); font-size: 1.15rem;"></i>
+            <div>
+              <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Order Hotline</div>
+              <a href="" id="detail-product-phone" style="font-weight: 700; color: var(--sapphire-light); font-size: 0.95rem;">+254 712 345678</a>
+            </div>
+          </div>
+
+          <button id="detail-add-to-cart-btn" class="btn btn-primary w-full"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        </div>
+      </div>
+
+      <hr class="modal-divider">
+
+      <!-- Reviews Section -->
+      <div class="detail-reviews-section">
+        <h3>Customer Reviews</h3>
+        
+        <div class="reviews-split">
+          <!-- List of Reviews -->
+          <div class="reviews-list-container" id="reviews-list">
+            <!-- Dynamic Reviews list -->
+          </div>
+
+          <!-- Add Review Form -->
+          <form id="add-review-form" class="add-review-form">
+            <h4>Leave a Review</h4>
+            <div class="form-group">
+              <label for="review-name">Your Name</label>
+              <input type="text" id="review-name" required placeholder="e.g. John K.">
+            </div>
+            <div class="form-group">
+              <label for="review-rating">Rating</label>
+              <div class="star-rating-input">
+                <input type="radio" id="star5" name="rating-stars" value="5" required><label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star4" name="rating-stars" value="4"><label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star3" name="rating-stars" value="3"><label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star2" name="rating-stars" value="2"><label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star1" name="rating-stars" value="1"><label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="review-comment">Comment</label>
+              <textarea id="review-comment" required rows="3" placeholder="Share your experience with this tech..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 DONNES I.T SERVICES. Premium Non-Monolithic E-Commerce.</p>
+      <div class="footer-meta">
+        <span>Backend API: <code>http://localhost:8080</code></span>
+        <span>|</span>
+        <span>Admin Dashboard: <code>http://localhost:3001</code></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App logic -->
+  <script src="app.js"></script>
+</body>
+</html>
