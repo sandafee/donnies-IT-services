@@ -1608,15 +1608,13 @@ input[type="range"] {
   height: 48px;
   border-radius: var(--radius-xs);
   object-fit: contain;
-  /* Default dark mode styling: invert logo to light sapphire blue and blend background transparently */
-  filter: invert(1) hue-rotate(180deg) brightness(1.3) saturate(1.2);
-  mix-blend-mode: screen;
-  transition: filter 0.3s ease, mix-blend-mode 0.3s ease;
+  /* Default dark mode styling: invert logo to light sapphire blue with transparent background */
+  filter: invert(1) hue-rotate(180deg) brightness(1.4) saturate(1.3);
+  transition: filter 0.3s ease;
 }
 
 [data-theme="light"] .logo-img {
-  /* Light mode styling: make logo highly visible as crisp dark blue with transparent background */
-  filter: brightness(0.85) contrast(1.25);
-  mix-blend-mode: multiply;
+  /* Light mode styling: keep original colors (crisp dark blue) with transparent background */
+  filter: brightness(0.9) contrast(1.15);
 }
 
